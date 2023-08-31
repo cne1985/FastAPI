@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, conint
 from datetime import datetime
 from typing import Optional
 
@@ -42,10 +42,13 @@ class PostCreate(PostBase):
 class Post(PostBase):
     id: int
     created_at: datetime
-    owner_id: int
+    # owner_id: int
     owner: UserOut
 
     class Config:
         orm_mode = True
 
 
+class Vote(BaseModel):
+    post_id: int
+    dir: conint(le=1)

@@ -1,15 +1,9 @@
-from fastapi import FastAPI, Response, status, HTTPException, Depends
-from fastapi.params import Body
-from pydantic import BaseModel
-from typing import Optional, List
-from dotenv import load_dotenv, find_dotenv
-from sqlalchemy.orm import Session
-from . import models, schemas, utils
-from .database import engine, get_db
-from .routers import users, posts, auth
+from fastapi import FastAPI
+from .database import engine
+from .routers import users, posts, auth, vote
+from . import models
+from .config import settings
 
-
-load_dotenv(find_dotenv())
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -17,6 +11,7 @@ app = FastAPI()
 app.include_router(users.router)
 app.include_router(posts.router)
 app.include_router(auth.router)
+app.include_router(vote.router)
 
 
 @app.get("/")
